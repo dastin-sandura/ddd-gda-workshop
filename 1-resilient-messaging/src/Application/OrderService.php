@@ -15,13 +15,13 @@ use Ecotone\Modelling\EventBus;
 use App\Application\PlaceOrder;
 final class OrderService
 {
-    #[Asynchronous("orders")]
+    //#[Asynchronous("orders")]
     #[CommandHandler(endpointId: "order.place")]
     public function placeOrder(PlaceOrder $placeOrder, OrderRepository $orderRepository, EventBus $ebus): void
     {
         $order = Order::create($placeOrder->orderId, $placeOrder->productName);
         $orderRepository->save($order);
-        $ebus->publish(new OrderWasPlaced($order->orderId),["orders"]);
+        $ebus->publish(new OrderWasPlaced($order->orderId));
     }
 
     #[Asynchronous("orders")]
